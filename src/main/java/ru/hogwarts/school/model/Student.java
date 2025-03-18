@@ -13,6 +13,10 @@ public class Student {
     private String name;
     private int age;
 
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Avatar avatar;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "faculty_id")
     @JsonBackReference
