@@ -12,7 +12,6 @@ import java.util.*;
 @Service
 public class FacultyService {
 
-
     private final FacultyRepository facultyRepository;
     @Autowired
     public FacultyService(FacultyRepository facultyRepository) {
@@ -45,6 +44,7 @@ public class FacultyService {
     public List<Faculty> findFacultiesByNameOrColor(String query) {
         return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(query, query);
     }
+
     public List<Student> getStudentsByFacultyId(Long facultyId) {
         return facultyRepository.findById(facultyId)
                 .map(Faculty::getStudents)
