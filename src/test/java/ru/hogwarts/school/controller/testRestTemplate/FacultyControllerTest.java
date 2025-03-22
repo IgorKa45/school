@@ -18,6 +18,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
+import java.util.Arrays;
+
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ExtendWith(SpringExtension.class)
@@ -151,14 +153,19 @@ public class FacultyControllerTest {
         student.setAge(17);
         student.setFaculty(createdFaculty);
 
-        ResponseEntity<Student> studentResponse = restTemplate.postForEntity("/students", student, Student.class);
+        ResponseEntity<Student> studentResponse = restTemplate.postForEntity("/student", student, Student.class);
         Assertions.assertEquals(HttpStatus.OK, studentResponse.getStatusCode());
         Assertions.assertNotNull(studentResponse.getBody());
 
+        ResponseEntity<Faculty[]> allFacultiesResponse = restTemplate.getForEntity("/faculty", Faculty[].class);
+        System.out.println("Все факультеты в БД перед тестом: " + Arrays.toString(allFacultiesResponse.getBody()));
+
+
         ResponseEntity<Student[]> response = restTemplate.getForEntity(
-                BASE_URL + "/" + facultyId + "/students",
+                "/faculty/" + facultyId + "/students",
                 Student[].class
         );
+
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertNotNull(response.getBody());
