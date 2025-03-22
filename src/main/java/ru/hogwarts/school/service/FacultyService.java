@@ -12,7 +12,6 @@ import java.util.*;
 @Service
 public class FacultyService {
 
-
     private final FacultyRepository facultyRepository;
     @Autowired
     public FacultyService(FacultyRepository facultyRepository) {
@@ -45,9 +44,21 @@ public class FacultyService {
     public List<Faculty> findFacultiesByNameOrColor(String query) {
         return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(query, query);
     }
+
     public List<Student> getStudentsByFacultyId(Long facultyId) {
-        return facultyRepository.findById(facultyId)
-                .map(Faculty::getStudents)
-                .orElse(Collections.emptyList());
+        System.out.println("Проверяем факультет с ID: " + facultyId);
+
+        Faculty faculty = facultyRepository.findFacultyWithStudentsById(facultyId);
+
+
+        if (faculty == null) {
+            System.out.println("Факультет не найден!");
+            return Collections.emptyList(); // Или выбросить 404 в контроллере
+        }
+
+        List<Student> students = faculty.getStudents();
+        System.out.println("Найден факультет: " + faculty.getName() + ", студенты: " + (students != null ? students.size() : "null"));
+
+        return students != null ? students : Collections.emptyList();
     }
 }

@@ -63,7 +63,16 @@ public class FacultyController {
     }
     @GetMapping("/{id}/students")
     public ResponseEntity<List<Student>> getStudentsByFacultyId(@PathVariable Long id) {
+        System.out.println("Получен запрос GET /faculty/" + id + "/students");
+
         List<Student> students = facultyService.getStudentsByFacultyId(id);
-        return students.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(students);
+
+        if (students.isEmpty()) {
+            System.out.println("Студенты не найдены для факультета ID: " + id);
+            return ResponseEntity.notFound().build();
+        }
+
+        System.out.println("Отправляем список студентов: " + students.size());
+        return ResponseEntity.ok(students);
     }
 }
