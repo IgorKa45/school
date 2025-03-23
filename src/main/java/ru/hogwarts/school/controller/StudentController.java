@@ -52,7 +52,7 @@ public class StudentController {
     }
     //Найти по возрасту
     @GetMapping
-    public ResponseEntity<Collection<Student>> findStudents(@RequestParam(required = false) int age) {
+    public ResponseEntity<Collection<Student>> findStudentsByAge(@RequestParam(required = false) int age) {
         if (age > 0) {
             return ResponseEntity.ok(studentService.findByAge(age));
         }
