@@ -1,6 +1,5 @@
 package ru.hogwarts.school.service;
 
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
@@ -50,6 +49,18 @@ public class StudentService {
         return studentRepository.findById(studentId)
                 .map(Student::getFaculty)
                 .orElse(null);
+    }
+
+    public Integer countAllStudents() {
+        return studentRepository.countAllStudents();
+    }
+
+    public Double findAverageAge() {
+        return studentRepository.findAverageAge();
+    }
+
+    public List<Student> findLastFiveStudents() {
+        return studentRepository.findLastFiveStudents();
     }
 }
 

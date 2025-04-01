@@ -52,7 +52,7 @@ public class StudentController {
     }
     //Найти по возрасту
     @GetMapping
-    public ResponseEntity<Collection<Student>> findStudentsByAge(@RequestParam(required = false) int age) {
+    public ResponseEntity<Collection<Student>> findStudentsByAge(@RequestParam(required = false) Integer age) {
         if (age > 0) {
             return ResponseEntity.ok(studentService.findByAge(age));
         }
@@ -70,5 +70,23 @@ public class StudentController {
     public ResponseEntity<Faculty> findStudentFaculty(@PathVariable Long id) {
         Faculty faculty = studentService.getFacultyByStudentId(id);
         return faculty != null ? ResponseEntity.ok(faculty) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Integer> countAllStudents() {
+        Integer count = studentService.countAllStudents();
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/avg-age")
+    public ResponseEntity<Double> findAverageAge() {
+        Double avgAge = studentService.findAverageAge();
+        return ResponseEntity.ok(avgAge);
+    }
+
+    @GetMapping("/last-five")
+    public ResponseEntity<List<Student>> findLastFiveStudents() {
+        List<Student> students = studentService.findLastFiveStudents();
+        return ResponseEntity.ok(students);
     }
 }

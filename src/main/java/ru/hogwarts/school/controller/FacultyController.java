@@ -66,10 +66,8 @@ public class FacultyController {
         System.out.println("Получен запрос GET /faculty/" + id + "/students");
 
         List<Student> students = facultyService.getStudentsByFacultyId(id);
-
-        if (students.isEmpty()) {
-            System.out.println("Студенты не найдены для факультета ID: " + id);
-            return ResponseEntity.notFound().build();
+        if (students == null || students.isEmpty()) {
+            return ResponseEntity.ok(Collections.emptyList());
         }
 
         System.out.println("Отправляем список студентов: " + students.size());
