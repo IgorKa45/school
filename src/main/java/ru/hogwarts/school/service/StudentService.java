@@ -45,6 +45,7 @@ public class StudentService {
     public List<Student> findStudentsByAgeRange(int min, int max) {
         return studentRepository.findByAgeBetween(min, max);
     }
+
     public Faculty getFacultyByStudentId (Long studentId) {
         return studentRepository.findById(studentId)
                 .map(Student::getFaculty)
