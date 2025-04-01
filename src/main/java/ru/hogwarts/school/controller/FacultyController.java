@@ -21,7 +21,7 @@ public class FacultyController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Faculty> getFacultyInfo(@PathVariable Long id) {
+    public ResponseEntity<Faculty> getFacultyById(@PathVariable Long id) {
         Faculty faculty = facultyService.findFaculty(id);
         if (faculty == null) {
             return ResponseEntity.notFound().build();
@@ -50,7 +50,7 @@ public class FacultyController {
     }
 
     @GetMapping
-    public ResponseEntity<Collection<Faculty>> findFaculties(@RequestParam(required = false) String color) {
+    public ResponseEntity<Collection<Faculty>> findFacultiesByColor(@RequestParam(required = false) String color) {
         if (color != null && !color.isBlank()) {
             return ResponseEntity.ok(facultyService.findByColor(color));
         }
@@ -63,7 +63,16 @@ public class FacultyController {
     }
     @GetMapping("/{id}/students")
     public ResponseEntity<List<Student>> getStudentsByFacultyId(@PathVariable Long id) {
+        System.out.println("Получен запрос GET /faculty/" + id + "/students");
+
         List<Student> students = facultyService.getStudentsByFacultyId(id);
-        return students.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(students);
+
+        if (students.isEmpty()) {
+            System.out.println("Студенты не найдены для факультета ID: " + id);
+            return ResponseEntity.notFound().build();
+        }
+
+        System.out.println("Отправляем список студентов: " + students.size());
+        return ResponseEntity.ok(students);
     }
 }
