@@ -11,6 +11,7 @@ import ru.hogwarts.school.service.AvatarService;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 
 @RestController
 @RequestMapping("/avatars")
@@ -63,4 +64,14 @@ public class AvatarController {
                 .contentType(MediaType.valueOf(avatar.getMediaType()))
                 .body(fileContent);
     }
+
+
+    @GetMapping
+    public ResponseEntity<List<Avatar>> getAllAvatars(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size) {
+        List<Avatar> avatars = avatarService.getAllAvatars(page, size);
+        return ResponseEntity.ok(avatars);
+    }
+
 }
