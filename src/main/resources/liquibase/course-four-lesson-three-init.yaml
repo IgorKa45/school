@@ -3,6 +3,10 @@ databaseChangeLog:
       id: 1
       author: your_name
       changes:
+        - preConditions:
+            - not:
+                - tableExists:
+                    tableName: faculty
         - createTable:
             tableName: faculty
             columns:
@@ -31,6 +35,10 @@ databaseChangeLog:
       id: 2
       author: your_name
       changes:
+        - preConditions:
+            - not:
+                - tableExists:
+                    tableName: student
         - createTable:
             tableName: student
             columns:

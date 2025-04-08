@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
-      file: db/changelog/course-four-lesson-three-init.yaml
+      file: classpath:/liquibase/course-four-lesson-three-init.yaml
+  - include:
+      file: classpath:/liquibase/course-four-lesson-three-indexes.yaml
