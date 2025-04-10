@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: classpath:/liquibase/course-four-lesson-three-init.yaml
+  - include:
+      file: classpath:/liquibase/course-four-lesson-three-indexes.yaml
