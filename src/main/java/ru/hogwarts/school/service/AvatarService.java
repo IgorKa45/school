@@ -50,6 +50,7 @@ public class AvatarService {
         String filePath = "avatars/" + studentId + "_" + file.getOriginalFilename();
         File destinationFile = new File(filePath);
         file.transferTo(destinationFile);
+
         // Создаем папку avatars, если её нет
         File directory = new File("avatars/");
         if (!directory.exists()) {

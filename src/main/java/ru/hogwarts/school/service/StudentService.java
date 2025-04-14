@@ -60,6 +60,8 @@ public class StudentService {
 
     public Faculty getFacultyByStudentId(Long studentId) {
         logger.debug("Was invoked method for find  faculty by student id = {}", studentId);
+    public Faculty getFacultyByStudentId (Long studentId) {
+      master
         return studentRepository.findById(studentId)
                 .map(Student::getFaculty)
                 .orElse(null);

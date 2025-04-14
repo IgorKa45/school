@@ -50,6 +50,7 @@ public class StudentController {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
+
     //Найти по возрасту
     @GetMapping
     public ResponseEntity<Collection<Student>> findStudentsByAge(@RequestParam(required = false) Integer age) {
