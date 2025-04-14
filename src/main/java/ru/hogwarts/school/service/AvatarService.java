@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @Service
 public class AvatarService {
+    private final Logger logger = LoggerFactory.getLogger(AvatarService.class);
     private final AvatarRepository avatarRepository;
     private final StudentRepository studentRepository;
 
@@ -27,17 +30,22 @@ public class AvatarService {
     }
 
     public Avatar findAvatar(Long studentId) {
+        logger.debug("Was invoked method for find avatar by student id = {}", studentId);
         return avatarRepository.findByStudentId(studentId).orElse(null);
     }
 
     public Avatar saveAvatar(Avatar avatar) {
+        logger.debug("Saving avatar for student id = {}", avatar.getStudent().getId());
         return avatarRepository.save(avatar);
     }
 
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
+        logger.info("Was invoked method for upload avatar for student id = {}", studentId);
         Student student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
-
+                .orElseThrow(() -> {
+                    logger.error("Student not found with id = {}", studentId);
+                    return new RuntimeException("Student not found");
+                });
         // Генерируем путь для сохранения файла
         String filePath = "avatars/" + studentId + "_" + file.getOriginalFilename();
         File destinationFile = new File(filePath);
@@ -60,6 +68,7 @@ public class AvatarService {
     }
 
     public List<Avatar> getAllAvatars(Integer pageNumber, Integer pageSize) {
+        logger.debug("Was invoked method for get all avatars");
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
         return avatarRepository.findAllAvatars(pageRequest);
     }
