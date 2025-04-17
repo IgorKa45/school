@@ -152,6 +152,25 @@ public class StudentControllerTest {
                 .andExpect(jsonPath("$.color").value("Blue"));
     }
 
+    @Test
+    public void testPrintStudentsParallel() throws Exception {
+        // Настраиваем мок
+        doNothing().when(studentService).printStudentsParallel();
+
+        mockMvc.perform(get("/student/print-parallel"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Printing students in parallel mode"));
+    }
+
+    @Test
+    public void testPrintStudentsSynchronized() throws Exception {
+        // Настраиваем мок
+        doNothing().when(studentService).printStudentsSynchronized();
+
+        mockMvc.perform(get("/student/print-synchronized"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Printing students in synchronized mode"));
+    }
 }
 
 
