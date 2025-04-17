@@ -73,4 +73,16 @@ public class FacultyController {
         System.out.println("Отправляем список студентов: " + students.size());
         return ResponseEntity.ok(students);
     }
+
+    @GetMapping("/longest-name")
+    public ResponseEntity<String> getLongestFacultyName() {
+        String longestName = facultyService.getLongestFacultyName();
+        return ResponseEntity.ok(longestName);
+    }
+
+    @GetMapping("/sum")
+    public ResponseEntity<Integer> calculateSum() {
+        int sum = facultyService.calculateSum();
+        return ResponseEntity.ok(sum);
+    }
 }

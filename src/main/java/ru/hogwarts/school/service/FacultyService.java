@@ -10,6 +10,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 @Service
 public class FacultyService {
@@ -68,5 +69,20 @@ public class FacultyService {
         List<Student> students = faculty.getStudents();
         logger.debug("Found faculty: {}, students count: {}", faculty.getName(), (students != null ? students.size() : 0));
         return students != null ? students : Collections.emptyList();
+    }
+
+    public String getLongestFacultyName() {
+        logger.debug("Was invoked method for find longest faculty name");
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElse("");
+    }
+
+    public int calculateSum() {
+        // Оптимизированная версия с параллельным потоком
+        return IntStream.rangeClosed(1, 1_000_000)
+                .parallel() // параллельная обработка
+                .reduce(0, Integer::sum);
     }
 }
