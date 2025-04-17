@@ -94,4 +94,42 @@ public class StudentControllerTest {
         ResponseEntity<Student> response = restTemplate.getForEntity(BASE_URL + "/1", Student.class);
         Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
+
+    @Test
+    void testPrintStudentsParallel() throws Exception {
+        // Создаем тестовых студентов
+        for (int i = 1; i <= 6; i++) {
+            Student student = new Student();
+            student.setName("Student " + i);
+            student.setAge(17 + i);
+            restTemplate.postForEntity(BASE_URL, student, Student.class);
+        }
+
+        ResponseEntity<String> response = restTemplate.getForEntity(
+                BASE_URL + "/print-parallel",
+                String.class
+        );
+
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals("Printing students in parallel mode", response.getBody());
+    }
+
+    @Test
+    void testPrintStudentsSynchronized() throws Exception {
+        // Создаем тестовых студентов
+        for (int i = 1; i <= 6; i++) {
+            Student student = new Student();
+            student.setName("Student " + i);
+            student.setAge(17 + i);
+            restTemplate.postForEntity(BASE_URL, student, Student.class);
+        }
+
+        ResponseEntity<String> response = restTemplate.getForEntity(
+                BASE_URL + "/print-synchronized",
+                String.class
+        );
+
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals("Printing students in synchronized mode", response.getBody());
+    }
 }

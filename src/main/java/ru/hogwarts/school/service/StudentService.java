@@ -98,7 +98,79 @@ public class StudentService {
                 .orElse(0.0);
     }
 
+    public void printStudentsParallel() {
+        logger.debug("Was invoked method for parallel printing of students");
+        List<Student> students = studentRepository.findAll();
 
+        if (students.size() < 6) {
+            logger.error("Not enough students in database (students found {})", students.size());
+            throw new RuntimeException("Need at least 6 students in database");
+        }
 
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+
+        Thread thread1 = new Thread(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+        });
+
+        Thread thread2 = new Thread(() -> {
+            System.out.println(students.get(4).getName());
+            System.out.println(students.get(5).getName());
+        });
+
+        thread1.start();
+        thread2.start();
+
+        // Ждём завершения потоков
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Thread execution interrupted", e);
+        }
+    }
+
+    // Синхронизированный метод для вывода
+    private synchronized void printStudentName(String name) {
+        System.out.println(name);
+    }
+
+    public void printStudentsSynchronized() {
+        logger.debug("Was invoked method for synchronized printing of students");
+
+        List<Student> students = studentRepository.findAll();
+
+        if (students.size() < 6) {
+            logger.error("Not enough students in database (students found {})", students.size());
+            throw new RuntimeException("Need at least 6 students in database");
+        }
+
+        printStudentName(students.get(0).getName());
+        printStudentName(students.get(1).getName());
+
+        Thread thread1 = new Thread(() -> {
+            printStudentName(students.get(2).getName());
+            printStudentName(students.get(3).getName());
+        });
+
+        Thread thread2 = new Thread(() -> {
+            printStudentName(students.get(4).getName());
+            printStudentName(students.get(5).getName());
+        });
+        thread1.start();
+        thread2.start();
+
+        // Ждём завершения потоков
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Thread execution interrupted", e);
+        }
+    }
 }
 

@@ -37,7 +37,7 @@ public class StudentController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Student> editStudent(@PathVariable Long id,@RequestBody Student student) {
+    public ResponseEntity<Student> editStudent(@PathVariable Long id, @RequestBody Student student) {
         Student foundStudent = studentService.editStudent(id, student);
         if (foundStudent == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -50,6 +50,7 @@ public class StudentController {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
+
     //Найти по возрасту
     @GetMapping
     public ResponseEntity<Collection<Student>> findStudentsByAge(@RequestParam(required = false) Integer age) {
@@ -89,6 +90,7 @@ public class StudentController {
         Double avgAge = studentService.findAverageAgeStream();
         return ResponseEntity.ok(avgAge);
     }
+
     @GetMapping("/last-five")
     public ResponseEntity<List<Student>> findLastFiveStudents() {
         List<Student> students = studentService.findLastFiveStudents();
@@ -100,4 +102,16 @@ public class StudentController {
         List<String> names = studentService.getStudentNamesStartingWithA();
         return ResponseEntity.ok(names);
     }
+
+    @GetMapping("/print-parallel")
+    public ResponseEntity<String> printStudentsParallel() {
+        studentService.printStudentsParallel();
+        return ResponseEntity.ok("Printing students in parallel mode");
+    }
+    @GetMapping("/print-synchronized")
+    public ResponseEntity<String> printStudentsSynchronized() {
+        studentService.printStudentsSynchronized();
+        return ResponseEntity.ok("Printing students in synchronized mode");
+    }
 }
+
